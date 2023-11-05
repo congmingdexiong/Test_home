@@ -1,0 +1,29 @@
+{
+  "name": "rxjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql": "^16.6.0",
+    "lit": "^2.0.2",
+    "rxjs": "^6.6.6",
+    "signals": "^1.0.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.17",
+    "@types/jasminewd2": "^2.0.9",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^16.9.4",
+    "eslint": "^8.34.0",
+    "jasmine": "^3.6.4",
+    "jasmine-core": "^3.6.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "typescript": "^4.9.5"
+  }
+}

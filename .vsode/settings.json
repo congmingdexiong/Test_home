@@ -1,0 +1,52 @@
+{
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "[javascript]": {
+      "editor.tabSize": 2
+    },
+    "[vue]": {
+      "editor.tabSize": 2
+    },
+    "[csharp]": {
+      "editor.tabSize": 4
+    },
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+    "javascript.referencesCodeLens.enabled": true,
+    "vetur.validation.script": false,
+    "vetur.validation.template": false,
+    "eslint.autoFixOnSave": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.options": {
+      "extensions": [
+        ".html",
+        ".js",
+        ".vue",
+        ".jsx"
+      ]
+    },
+    "eslint.validate": [
+      {
+        "language": "html",
+        "autoFix": true
+      },
+      {
+        "language": "vue",
+        "autoFix": true
+      },
+      "vue-html",
+      {
+        "language": "javascript",
+        "autoFix": true
+      },
+      {
+        "language": "javascriptreact",
+        "autoFix": true
+      }
+    ],
+    "editor.rulers": [
+      80,
+      100
+    ],"html.format.enable": true
+  }
+  

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       div, p {
+            border: 1px solid red;
+        }
+        
+        span {
+            border: 1px solid green;
+            width: 600px;
+            height: 200px;
+        }
+        em {
+            border: 1px solid green;
+            width: 600px;
+            height: 200px;
+        }
+        
+        .setline {
+            border: 1px solid green;
+            display: inline-block;
+            width: 400px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>我是块级div元素哦，我会独自占一行哦</div>
+    <p>我也是块级p元素哦，我会独自占一行哦</p>
+    <h1>我也是块级h1元素哦，我也会独自占一行哦</h1>
+    
+    <span>我是行内元素span哦，不会占一行哦，但是设置width,height对我无效哦</span>
+    <em>我也是行内元素em哦，设置的width，height对我无效哦</em>
+    <span class="setline">我是span，我改变display值时，width,height对我有了效果</span>
+    <em class="setline">我是em，我改变display值时，width,height对我有了效果</em>
+</body>
+</html>
