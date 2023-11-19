@@ -29,7 +29,9 @@ const schema = buildSchema(`
 // query
 const source = `
     query HeroForEpisode($ep: String!) {
+      __typename
       getHero(episode: $ep) {
+        __typename
         ... on Droid {
           primaryFunction
         }
@@ -42,9 +44,9 @@ const source = `
 `;
 const rootValue = {
   getHero: {
-    __typename: 'Human',
-    name: 'Odie',
-    height: 'true',
+    __typename: "Human",
+    name: "Odie",
+    height: "true",
   },
 };
 
@@ -61,19 +63,14 @@ const fieldResolver: GraphQLFieldResolver<any, any> = (
       resolveType: (obj: any) => {
         console.log(obj);
 
-        return { __typename: "Human", name: "R2-D2", height: "height" };
-      },
-      isTypeOf: () => {
-        return "Human";
+        return 'Human';
       },
     },
-    // Query: {
-    //   getHero: (obj: any, context: any, info: any) => {
-    //     console.log(context);
-
-    //     return { __typename: "Human", name: "R2-D2", height: "height" };
-    //   },
-    // },
+    Query: {
+      getHero: (obj: any, context: any, info: any) => {
+        return { __typename: "Human", name: "R2-D2", height: "height" };
+      },
+    },
   };
 };
 
@@ -84,7 +81,7 @@ const variableValues1 = {
 graphql({
   schema,
   source,
-  rootValue,
+  // rootValue,
   fieldResolver,
   variableValues: variableValues1,
 }).then((response: any) => {
