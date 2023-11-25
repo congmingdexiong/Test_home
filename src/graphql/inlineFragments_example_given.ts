@@ -1,108 +1,89 @@
 import {
+  GraphQLBoolean,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLUnionType,
   graphql,
-  buildSchema,
-  GraphQLFieldResolver,
-  GraphQLResolveInfo,
-} from "graphql";
+} from 'graphql';
+import { Context } from 'mocha';
 
-// union Hero = Human | Droid
-const schema = buildSchema(`
-  type Query {
-    pets: Pet
+class Dog {
+  name: string;
+  woofs: boolean;
+
+  constructor(name: string, woofs: boolean) {
+    this.name = name;
+    this.woofs = woofs;
   }
-
-  union Pet = Dog | Cat
-
-  type Cat {
-    name: String
-    meows: Boolean
-  }
-  
-  type Dog {
-    name: String
-    woofs: Boolean
-  }
-
-  
-`);
-
-// query
-const source = `
-  query HeroForEpisode {
-    pets {
-      
-      ... on Dog {
-        name
-        woofs
-      }
-      
-      ... on Cat {
-        name
-        meows
-      }
-    }
-  }
-`;
-
-const rootValue = {
-  pets: {
-    __typename: "Dog",
-    name: "Odie",
-    woofs: true,
-  },
-};
-
-const fieldResolver: GraphQLFieldResolver<any, any> = (
-  source: any,
-  args: any,
-  context: any,
-  info: GraphQLResolveInfo
-) => {
-  console.log(source);
-  console.log(args);
-  console.log(context);
-  console.log(info);
-  return {
-    Query: {
-      pets: (obj: any, args: any, context: any, info: any) => {
-        console.log(obj);
-
-        return {
-          __typename: "Dog",
-          isTypeOf: "Dog",
-          name: "Odie",
-          woofs: true,
-        };
-      },
-    },
-    Pet: {
-      __resolveType: (obj: any, context: any, info: any) => {
-        console.log(obj);
-
-        return "Dog";
-        // if (obj instanceof Dog) return 'Dog'
-      },
-    },
-  };
-};
+}
 
 class Cat {
-  get __typename() {
-    return "Cat";
-  }
-}
-class Dog {
-  get __typename() {
-    return "Dog";
+  name: string;
+  meows: boolean;
+
+  constructor(name: string, meows: boolean) {
+    this.name = name;
+    this.meows = meows;
   }
 }
 
-const variableValues = {
-  ep: "JEDI",
-};
+const DogType = new GraphQLObjectType<Dog, Context>({
+  name: 'Dog',
+  isTypeOf(obj, context) {
+    const isDog = obj instanceof Dog;
+    return isDog;
+  },
+  fields: {
+    name: { type: GraphQLString },
+    woofs: { type: GraphQLBoolean },
+  },
+});
 
-graphql({ schema, source, fieldResolver, variableValues }).then(
-  (response: any) => {
-    console.log(JSON.stringify(response));
+const CatType = new GraphQLObjectType<Cat, Context>({
+  name: 'Cat',
+  isTypeOf(obj, context) {
+    const isCat = obj instanceof Cat;
+    return isCat;
+  },
+  fields: {
+    name: { type: GraphQLString },
+    meows: { type: GraphQLBoolean },
+  },
+});
+
+const PetType = new GraphQLUnionType({
+  name: 'Pet',
+  types: [DogType, CatType],
+});
+
+const schema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: 'Query',
+    fields: {
+      pets: {
+        type: new GraphQLList(PetType),
+        resolve() {
+          return [new Dog('Odie', true), new Cat('Garfield', false)];
+        },
+      },
+    },
+  }),
+});
+
+const source = `{
+  pets {
+    ... on Dog {
+      name
+      woofs
+    }
+    ... on Cat {
+      name
+      meows
+    }
   }
-);
+}`;
+graphql({ schema, source }).then((response: any) => {
+  console.log(JSON.stringify(response));
+});
