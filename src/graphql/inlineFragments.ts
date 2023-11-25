@@ -1,62 +1,53 @@
-import { graphql, buildSchema } from "graphql";
+import { buildSchema, graphql } from 'graphql';
 
-// union Hero = Human | Droid
 const schema = buildSchema(`
-  union Hero = Human | Droid
-  
-  type Query {
-    getHero(episode: String): Hero
-  }
-  
-  type Human{ 
-    name: String!
-    height: String
-  }
-  
-  type Droid{
-    name: String!
-    primaryFunction: String
-  }
-
-
-  
-`);
-// query
-const source = `
-    query HeroForEpisode($ep: String!) {
-      getHero(episode: $ep) {
-        ... on Droid {
-          name
-          primaryFunction
-        }
-        ... on Human {
-          name
-          height
-        }
-      
+      type Query {
+        pets: [Pet]
       }
-    }
-`;
+
+      union Pet = Cat | Dog
+
+      type Cat {
+        name: String
+        meows: Boolean
+      }
+
+      type Dog {
+        name: String
+        woofs: Boolean
+      }
+    `);
+
+const source = `
+      {
+        pets {
+          ... on Dog {
+            name
+            woofs
+          }
+          ... on Cat {
+            name
+            meows
+          }
+        }
+      }
+    `;
+
 const rootValue = {
-  Hero: {
-    name: "R2-D2",
-    height: "height",
-  },
-  Query: {
-    getHero: (obj: any, context: any, info: any) => {
-      console.log(context);
-
-      return { id: 1 };
+  pets: [
+    {
+      __typename: 'Dog',
+      name: 'Odie',
+      woofs: true,
     },
-  },
+    {
+      __typename: 'Cat',
+      name: 'Garfield',
+      meows: false,
+    },
+  ],
 };
 
-const variableValues1 = {
-  ep: "JEDI",
-};
-
-graphql({ schema, source, rootValue, variableValues: variableValues1 }).then(
-  (response: any) => {
-    console.log(JSON.stringify(response));
-  }
-);
+graphql({ schema, source, rootValue }).then((response: any) => {
+  console.log(JSON.stringify(response));
+});
