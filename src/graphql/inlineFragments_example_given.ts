@@ -84,6 +84,16 @@ const source = `{
     }
   }
 }`;
-graphql({ schema, source }).then((response: any) => {
+graphql({
+  schema,
+  source,
+  fieldResolver(_source: any, _args: any, _context: any, info: any) {
+    // For the purposes of test, just return the name of the field!
+    console.log(info);
+    console.log('---------------------------info end');
+
+    // return info.fieldName;
+  },
+}).then((response: any) => {
   console.log(JSON.stringify(response));
 });

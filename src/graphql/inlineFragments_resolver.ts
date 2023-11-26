@@ -48,12 +48,6 @@ const rootValue = {
   ],
 };
 
-const fieldResolver = (_source: any, _args: any, _context: any, info: any) => {
-  console.log(info.fieldName);
-
-  // return info.fieldName;
-};
-
-graphql({ schema, source, rootValue, fieldResolver }).then((response: any) => {
+graphql({ schema, source, rootValue }).then((response: any) => {
   console.log(JSON.stringify(response));
 });
